@@ -14,49 +14,63 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 *{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "IBM Plex Sans",system-ui,sans-serif}
 h1,h2,h3,.num{font-family:"Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.01em;margin:0}
-header{display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;padding:22px 24px 14px;border-bottom:4px solid var(--accent)}
-h1{font-size:34px;font-weight:700;line-height:1}
-header p{margin:4px 0 0;color:var(--mute)}
-main{max-width:1200px;margin:0 auto;padding:18px 16px 40px}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:10px}
-.kpi{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--line);padding:8px 10px;cursor:default}
-.kpi .num{font-size:30px;font-weight:700;line-height:1}.kpi span{color:var(--mute);font-size:12px;line-height:1.2;display:block;margin-top:2px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;padding:10px 16px 8px;border-bottom:3px solid var(--accent)}
+h1{font-size:26px;font-weight:700;line-height:1}
+header p{margin:2px 0 0;font-size:13px;color:var(--mute)}
+main{max-width:1440px;margin:0 auto;padding:10px 12px 28px}
+.vt{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:6px;font-size:13px;color:var(--mute)}
+.vt button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:6px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--line);padding:5px 8px;cursor:default}
+.kpi .num{font-size:24px;font-weight:700;line-height:1}.kpi span{color:var(--mute);font-size:11.5px;line-height:1.15;display:block;margin-top:1px}
 .kpi.bad{border-left-color:var(--bad)}
 button.kpi{font:inherit;color:inherit;text-align:left;cursor:pointer}
 button.kpi[aria-pressed=true]{outline:3px solid var(--accent)}
-.grid{display:grid;grid-template-columns:330px 1fr;gap:16px;margin-top:16px;align-items:start}
+.grid{display:grid;grid-template-columns:280px 1fr;gap:10px;margin-top:10px;align-items:start}
 @media(max-width:860px){.grid{grid-template-columns:1fr}}
-section{background:var(--panel);border:1px solid var(--line);padding:14px 16px;min-width:0}
-h2{font-size:22px;font-weight:600;margin-bottom:10px}
-h3{font-size:19px;font-weight:600}
+section{background:var(--panel);border:1px solid var(--line);padding:9px 11px;min-width:0}
+h2{font-size:20px;font-weight:600;margin-bottom:6px}
+h3{font-size:17px;font-weight:600}
 .tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-input,select,button.btn{font:inherit;padding:7px 9px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:3px}
+input,select,button.btn{font:inherit;padding:5px 8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:3px}
 button.btn{cursor:pointer;font-weight:600}button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-button.sm{padding:3px 8px;font-size:13px}
+button.sm{padding:2px 7px;font-size:12px}
 :focus-visible{outline:3px solid var(--info);outline-offset:1px}
-.mc{width:100%;text-align:left;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-left:5px solid var(--line);padding:10px 12px;margin-bottom:10px;cursor:pointer;display:block}
+.mc{width:100%;text-align:left;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-left:5px solid var(--line);padding:6px 9px;margin-bottom:6px;cursor:pointer;display:block}
 .mc[aria-pressed=true]{border-left-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--bg))}
 .mc .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.mc .num{font-size:28px;font-weight:700}
-.mc small,.sub{color:var(--mute);font-size:13px}
-.seg{display:flex;height:10px;background:var(--c0);margin:6px 0 4px}
+.mc .num{font-size:22px;font-weight:700}
+.mc small,.sub{color:var(--mute);font-size:12.5px}
+.seg{display:flex;height:8px;background:var(--c0);margin:4px 0 3px}
 .seg i{display:block;height:100%}
 .late{color:var(--bad);font-weight:600}
-.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--mute);margin:8px 0 12px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--mute);margin:4px 0 6px}
 .legend b{display:inline-block;width:10px;height:10px;margin-right:5px}
-.comp{border-top:1px solid var(--line);padding:10px 0}
+.comp{border-top:1px solid var(--line);padding:6px 0}
 [hidden]{display:none!important}
+.pct{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;line-height:1;padding:0 2px;color:#000;white-space:nowrap}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pct{color:var(--ink)}}
+:root[data-theme="dark"] .pct{color:var(--ink)}
+.pct.u{font-size:28px}.pct.k{font-size:22px}
+.hd .r{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+button.tg{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:left;letter-spacing:inherit}
+button.tg::before{content:"▾";display:inline-block;width:1.1em;color:var(--mute)}
+button.tg[aria-expanded=false]::before{content:"▸"}
 input[type=color]{padding:2px;height:36px;width:100%}
-.unit{border:1px solid var(--line);border-left:6px solid var(--accent);background:var(--bg);padding:10px 14px;margin-top:16px}
+.unit{border:1px solid var(--line);border-left:6px solid var(--accent);background:var(--bg);padding:6px 10px;margin-top:8px}
 .unit>.hd{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
-.unit>.hd h2{margin:0}
+.unit>.hd h2{margin:0;font-size:22px}
 .comp .hd{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
 .scroll{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:560px}
-th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:14px}
-th{color:var(--mute);font-weight:600;font-size:13px}
-td select{border-left-width:6px;font-weight:600}
-.empty{padding:22px;text-align:center;color:var(--mute)}
+table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:720px}
+th,td{text-align:left;padding:3px 6px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:13px}
+th{color:var(--mute);font-weight:600;font-size:12px}
+td select{border-left-width:6px;font-weight:600;padding:2px 4px;font-size:13px}
+td,th{overflow-wrap:anywhere}
+td:nth-child(3),th:nth-child(3){text-align:center}
+td select{width:100%;min-width:0}
+button.btn{white-space:nowrap}
+.empty{padding:14px;text-align:center;color:var(--mute)}
 dialog{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:18px;max-width:540px;width:calc(100% - 24px)}
 dialog::backdrop{background:rgba(0,0,0,.5)}
 form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -71,6 +85,7 @@ form .acts{grid-column:1/-1;display:flex;gap:8px;justify-content:space-between}
   <div class="tools"><button class="btn" id="ns">Nueva sonda</button><button class="btn primary" id="np">Nueva pieza</button></div>
 </header>
 <main>
+  <div class="vt" id="vt"></div>
   <div class="kpis" id="kpis"></div>
   <div class="grid">
     <section><h2>Sondas en taller</h2><div id="ms"></div></section>
@@ -83,10 +98,10 @@ form .acts{grid-column:1/-1;display:flex;gap:8px;justify-content:space-between}
   <label>Unidad<select name="unidad"></select><input name="unidadN" placeholder="Nombre de la nueva unidad (Ej. Unidad de potencia)" hidden></label>
   <label>Kit / componente<select name="comp"></select><input name="compN" placeholder="Nombre del nuevo kit (Ej. Kit motor diesel)" hidden></label>
   <label>Pieza<input name="pieza" required placeholder="Ej. Soporte"></label>
+  <label>Código<input name="cod" placeholder="Ej. 4521-A"></label>
   <label>Cantidad<input name="cant" type="number" min="1" value="1"></label>
   <label>Etapa<select name="etapa"></select></label>
-  <label>Proveedor / responsable<input name="prov" placeholder="Ej. Maestranza interna"></label>
-  <label>N.º de RQ<input name="oc"></label>
+    <label>N.º de RQ<input name="oc"></label>
   <label>N.º de SMM3<input name="smm"></label>
   <label>Fecha prometida<input name="fecha" type="date"></label>
   <div class="acts"><button type="button" class="btn" id="dd">Eliminar</button><span><button type="button" class="btn" id="cp">Cancelar</button> <button class="btn primary" type="submit">Guardar pieza</button></span></div>
@@ -95,7 +110,7 @@ form .acts{grid-column:1/-1;display:flex;gap:8px;justify-content:space-between}
 <dialog id="dm"><form id="fm" method="dialog">
   <label class="full">Sonda<input name="n" required placeholder="Ej. LF-90 #14"></label>
   <label>Fecha de ingreso<input name="ing" type="date" required></label>
-  <label>Fecha compromiso<input name="com" type="date" required></label>
+  <label>Fecha programada<input name="com" type="date" required></label>
   <div class="acts"><button type="button" class="btn" id="dmx">Eliminar sonda</button><span><button type="button" class="btn" id="cm">Cancelar</button> <button class="btn primary" type="submit">Guardar sonda</button></span></div>
 </form></dialog>
 
@@ -143,7 +158,13 @@ let D;try{D=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!D||!D.m||!D.p)D=seed();
 D.uc=D.uc||{};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}push()};
+let COL=new Set();try{COL=new Set(JSON.parse(localStorage.getItem("sondas-col")||"[]"))}catch(e){}
+const saveCol=()=>{try{localStorage.setItem("sondas-col",JSON.stringify([...COL]))}catch(e){}};
+let vista="sonda";try{vista=localStorage.getItem("sondas-vista")==="general"?"general":"sonda"}catch(e){}
 let sel=D.m[0]?.id,fe="",editP=null,editM=null;
+const LATE="__late__";
+const fm=p=>!fe||(fe===LATE?late(p):p.e===fe);
+const fl=()=>fe===LATE?"Atrasadas":fe;
 const idx=e=>ST.indexOf(e);
 const prog=ps=>ps.length?Math.round(ps.reduce((s,p)=>s+W[idx(p.e)],0)/ps.length*100):0;
 const late=p=>p.e!=="Listo"&&p.f&&p.f<today;
@@ -152,28 +173,33 @@ const ukey=(s,u)=>s+"|"+u,NEW="__new__",NONE="__none__",tok=u=>u===""?NONE:u,unt
 $("fp").elements.etapa.innerHTML=ST.map(e=>`<option>${e}</option>`).join("");
 function render(){
  const all=D.p;
- $("kpis").innerHTML=`<div class="kpi"><div class="num">${all.length}</div><span>Piezas en seguimiento</span></div>`+
-  ["Compras","Maestranza","Soldadura","Pintura","Servicio externo"].map(e=>`<button class="kpi" data-e="${e}" aria-pressed="${fe===e}" style="border-left-color:var(--c${idx(e)})"><div class="num">${all.filter(p=>p.e===e).length}</div><span>En ${e.toLowerCase()}</span></button>`).join("")+
-  `<div class="kpi ${all.some(late)?"bad":""}"><div class="num">${all.filter(late).length}</div><span>Piezas atrasadas</span></div>`+
-  `<div class="kpi" style="border-left-color:var(--c7)"><div class="num">${prog(all)}%</div><span>Avance de la flota</span></div>`;
+ const kp=vista==="general"?all:all.filter(p=>p.s===sel),ms=D.m.find(x=>x.id===sel);
+ $("vt").innerHTML=`<span>Indicadores:</span><button class="btn sm" data-v="sonda" aria-pressed="${vista==="sonda"}">Sonda seleccionada${ms?": "+esc(ms.n):""}</button><button class="btn sm" data-v="general" aria-pressed="${vista==="general"}">Vista general (todas las sondas)</button>`;
+ $("kpis").innerHTML=`<div class="kpi"><div class="num">${kp.length}</div><span>Piezas en seguimiento</span></div>`+
+  ["Compras","Maestranza","Soldadura","Pintura","Servicio externo"].map(e=>`<button class="kpi" data-e="${e}" aria-pressed="${fe===e}" style="border-left-color:var(--c${idx(e)})"><div class="num">${kp.filter(p=>p.e===e).length}</div><span>En ${e.toLowerCase()}</span></button>`).join("")+
+  `<button class="kpi ${kp.some(late)?"bad":""}" data-e="${LATE}" aria-pressed="${fe===LATE}"><div class="num">${kp.filter(late).length}</div><span>Piezas atrasadas</span></button>`+
+  `<div class="kpi" style="border-left-color:var(--c7)"><div class="num">${prog(kp)}%</div><span>${vista==="general"?"Avance de la flota":"Avance de la sonda"}</span></div>`;
  $("ms").innerHTML=D.m.length?D.m.map(m=>{const ps=all.filter(p=>p.s===m.id),l=ps.filter(late).length;
-  return `<button class="mc" data-m="${m.id}" aria-pressed="${sel===m.id}"><div class="top"><b>${esc(m.n)}</b><span class="num">${prog(ps)}%</span></div>${ps.length?seg(ps):""}<small>${ps.filter(p=>p.e==="Listo").length}/${ps.length} piezas listas · ${days(m.ing,today)} d en taller</small><br><small class="${m.com<today?"late":""}">Compromiso ${fmt(m.com)}${l?` · <span class="late">${l} atrasada${l>1?"s":""}</span>`:""}</small></button>`}).join(""):`<div class="empty">Aún no hay sondas. Crea una con “Nueva sonda”.</div>`;
+  return `<button class="mc" data-m="${m.id}" aria-pressed="${sel===m.id}"><div class="top"><b>${esc(m.n)}</b><span class="num">${prog(ps)}%</span></div>${ps.length?seg(ps):""}<small>${ps.filter(p=>p.e==="Listo").length}/${ps.length} piezas listas · ${days(m.ing,today)} d en taller</small><br><small class="${m.com<today?"late":""}">Programada ${fmt(m.com)}${l?` · <span class="late">${l} atrasada${l>1?"s":""}</span>`:""}</small></button>`}).join(""):`<div class="empty">Aún no hay sondas. Crea una con “Nueva sonda”.</div>`;
  const m=D.m.find(x=>x.id===sel);
  if(!m){$("det").innerHTML=`<div class="empty">Selecciona una sonda para ver sus componentes y piezas.</div>`;return}
- const ps=all.filter(p=>p.s===m.id),shown=ps.filter(p=>!fe||p.e===fe);
+ const ps=all.filter(p=>p.s===m.id),shown=ps.filter(p=>fm(p));
  const U=p=>p.u||"Sin unidad";
  const units=[...new Set(ps.map(U))].filter(u=>shown.some(p=>U(p)===u));
- $("det").innerHTML=`<div class="tools" style="justify-content:space-between"><div><h2 style="margin:0">${esc(m.n)}</h2><span class="sub">Ingreso ${fmt(m.ing)} · compromiso ${fmt(m.com)}</span></div><div><span class="num" style="font-size:40px;font-weight:700">${prog(ps)}%</span> <button class="btn sm" id="em">Editar sonda</button></div></div>
+ $("det").innerHTML=`<div class="tools" style="justify-content:space-between"><div><h2 style="margin:0">${esc(m.n)}</h2><span class="sub">Ingreso ${fmt(m.ing)} · programada ${fmt(m.com)}</span></div><div><span class="num" style="font-size:40px;font-weight:700">${prog(ps)}%</span> <button class="btn sm" id="em">Editar sonda</button></div></div>
  ${ps.length?seg(ps):""}
- <div class="legend">${ST.map((e,i)=>`<span><b style="background:var(--c${i})"></b>${e} ${ps.filter(p=>p.e===e).length}</span>`).join("")}${fe?` <button class="btn sm" id="cf">Quitar filtro: ${fe}</button>`:""}</div>`+
- (units.length?units.map(u=>{const raw=u==="Sin unidad"?"":u,col=D.uc[ukey(m.id,raw)]||"var(--accent)",up=ps.filter(p=>U(p)===u),ks=[...new Set(up.map(p=>p.c))].filter(c=>shown.some(p=>U(p)===u&&p.c===c));return `<div class="unit" style="border-left-color:${col}"><div class="hd"><h2>${esc(u)}</h2><span class="sub">${up.filter(p=>p.e==="Listo").length}/${up.length} listas · ${prog(up)}% <button class="btn sm" data-eu="${esc(raw)}">Editar unidad</button></span></div>${seg(up)}`+ks.map(c=>{const cp=up.filter(p=>p.c===c);return `<div class="comp"><div class="hd"><h3>${esc(c)}</h3><span class="sub">${cp.filter(p=>p.e==="Listo").length}/${cp.length} listas · ${prog(cp)}%</span></div>${seg(cp)}
- <div class="scroll"><table><thead><tr><th>Pieza</th><th>Etapa</th><th>Responsable</th><th>RQ</th><th>SMM3</th><th>Prometida</th><th></th></tr></thead><tbody>`+
- cp.filter(p=>!fe||p.e===fe).map(p=>`<tr><td>${esc(p.p)}${p.cant>1?` <small class="sub">×${p.cant}</small>`:""}</td><td><select data-pe="${p.id}" style="border-left-color:var(--c${idx(p.e)})" aria-label="Etapa de ${esc(p.p)}">${ST.map(e=>`<option${e===p.e?" selected":""}>${e}</option>`).join("")}</select></td><td>${esc(p.prov||"—")}</td><td>${esc(p.oc||"—")}</td><td>${esc(p.smm||"—")}</td><td class="${late(p)?"late":""}">${fmt(p.f)}${late(p)?" (atrasada)":""}</td><td><button class="btn sm" data-ep="${p.id}">Editar</button></td></tr>`).join("")+`</tbody></table></div></div>`}).join("")+`</div>`}).join(""):
- `<div class="empty">${ps.length?"Ninguna pieza está en esta etapa.":"Esta sonda aún no tiene piezas. Agrega la primera con “Nueva pieza”."}</div>`);
+ <div class="legend">${ST.map((e,i)=>`<span><b style="background:var(--c${i})"></b>${e} ${ps.filter(p=>p.e===e).length}</span>`).join("")} <button class="btn sm" id="ca">Contraer todo</button> <button class="btn sm" id="xa">Expandir todo</button>${fe?` <button class="btn sm" id="cf">Quitar filtro: ${fl()}</button>`:""}</div>`+
+ (units.length?units.map(u=>{const raw=u==="Sin unidad"?"":u,col=D.uc[ukey(m.id,raw)]||"var(--accent)",up=ps.filter(p=>U(p)===u),ks=[...new Set(up.map(p=>p.c))].filter(c=>shown.some(p=>U(p)===u&&p.c===c));const uk=ukey(m.id,raw),cu=COL.has(uk);return `<div class="unit" style="border-left-color:${col}"><div class="hd"><h2><button class="tg" data-tu="${esc(uk)}" aria-expanded="${!cu}">${esc(u)}</button></h2><span class="r"><span class="sub">${up.filter(p=>p.e==="Listo").length}/${up.length} listas</span><span class="pct u${prog(up)>=100?" full":""}">${prog(up)}%</span><button class="btn sm" data-eu="${esc(raw)}">Editar unidad</button></span></div>${seg(up)}`+(cu?[]:ks).map(c=>{const kk=uk+"|"+c,ck=COL.has(kk),cp=up.filter(p=>p.c===c);return `<div class="comp"><div class="hd"><h3><button class="tg" data-tk="${esc(kk)}" aria-expanded="${!ck}">${esc(c)}</button></h3><span class="r"><span class="sub">${cp.filter(p=>p.e==="Listo").length}/${cp.length} listas</span><span class="pct k${prog(cp)>=100?" full":""}">${prog(cp)}%</span></span></div>${seg(cp)}`+(ck?"":`<div class="scroll"><table><colgroup><col style="width:22%"><col style="width:13%"><col style="width:9%"><col style="width:18%"><col style="width:10%"><col style="width:10%"><col style="width:10%"><col style="width:8%"></colgroup><thead><tr><th>Pieza</th><th>Código</th><th>Cantidad</th><th>Etapa</th><th>RQ</th><th>SMM3</th><th>Prometida</th><th></th></tr></thead><tbody>`+
+ cp.filter(p=>fm(p)).map(p=>`<tr><td>${esc(p.p)}</td><td>${esc(p.cod||"—")}</td><td>${p.cant||1}</td><td><select data-pe="${p.id}" style="border-left-color:var(--c${idx(p.e)})" aria-label="Etapa de ${esc(p.p)}">${ST.map(e=>`<option${e===p.e?" selected":""}>${e}</option>`).join("")}</select></td><td>${esc(p.oc||"—")}</td><td>${esc(p.smm||"—")}</td><td class="${late(p)?"late":""}">${fmt(p.f)}${late(p)?" (atrasada)":""}</td><td><button class="btn sm" data-ep="${p.id}">Editar</button></td></tr>`).join("")+`</tbody></table></div>`)+`</div>`}).join("")+`</div>`}).join(""):
+ `<div class="empty">${ps.length?(fe===LATE?"Ninguna pieza atrasada.":"Ninguna pieza está en esta etapa."):"Esta sonda aún no tiene piezas. Agrega la primera con “Nueva pieza”."}</div>`);
 }
 document.addEventListener("click",e=>{
  const t=e.target.closest("button");if(!t)return;
- if(t.dataset.m){sel=t.dataset.m;render()}
+ if(t.dataset.v){vista=t.dataset.v;try{localStorage.setItem("sondas-vista",vista)}catch(e){}render()}
+ else if(t.dataset.tu||t.dataset.tk){const k=t.dataset.tu||t.dataset.tk;COL.has(k)?COL.delete(k):COL.add(k);saveCol();render()}
+ else if(t.id==="ca"){D.p.filter(p=>p.s===sel).forEach(p=>{const uk=ukey(sel,p.u||"");COL.add(uk);COL.add(uk+"|"+p.c)});saveCol();render()}
+ else if(t.id==="xa"){[...COL].forEach(k=>{if(k.startsWith(sel+"|"))COL.delete(k)});saveCol();render()}
+ else if(t.dataset.m){sel=t.dataset.m;render()}
  else if(t.dataset.e){fe=fe===t.dataset.e?"":t.dataset.e;render()}
  else if(t.id==="cf"){fe="";render()}
  else if(t.dataset.ep)openP(D.p.find(p=>p.id===t.dataset.ep));
@@ -206,14 +232,14 @@ function openP(p){
  editP=p?p.id:null;$("fp").reset();const f=$("fp").elements;
  f.sonda.innerHTML=D.m.map(m=>`<option value="${m.id}">${esc(m.n)}</option>`).join("");
  const v=p||{s:sel||D.m[0].id,c:"",p:"",cant:1,e:"Pendiente",prov:"",oc:"",f:""};
- f.sonda.value=v.s;fillUnits(v.s,p?(v.u||""):undefined);fillKits(p?v.c:undefined);f.pieza.value=v.p;f.cant.value=v.cant;f.etapa.value=v.e;f.prov.value=v.prov;f.oc.value=v.oc;f.smm.value=v.smm||"";f.fecha.value=v.f;
+ f.sonda.value=v.s;fillUnits(v.s,p?(v.u||""):undefined);fillKits(p?v.c:undefined);f.pieza.value=v.p;f.cod.value=v.cod||"";f.cant.value=v.cant;f.etapa.value=v.e;f.oc.value=v.oc;f.smm.value=v.smm||"";f.fecha.value=v.f;
  $("dd").style.visibility=p?"visible":"hidden";$("dp").showModal();
 }
 $("np").onclick=()=>openP();$("cp").onclick=()=>$("dp").close();
 $("fp").onsubmit=e=>{const f=e.target.elements;
  const uv=f.unidad.value;let u=uv===NEW?f.unidadN.value.trim():untok(uv);if(u.toLowerCase()==="sin unidad")u="";
  const c=f.comp.value===NEW?f.compN.value.trim():f.comp.value;
- const o={id:editP||"p"+Date.now(),s:f.sonda.value,c:c,p:f.pieza.value.trim(),cant:+f.cant.value||1,e:f.etapa.value,prov:f.prov.value.trim(),oc:f.oc.value.trim(),smm:f.smm.value.trim(),u:u,f:f.fecha.value};
+ const o={id:editP||"p"+Date.now(),s:f.sonda.value,c:c,p:f.pieza.value.trim(),cod:f.cod.value.trim(),cant:+f.cant.value||1,e:f.etapa.value,prov:(D.p.find(p=>p.id===editP)||{}).prov||"",oc:f.oc.value.trim(),smm:f.smm.value.trim(),u:u,f:f.fecha.value};
  const i=D.p.findIndex(p=>p.id===editP);if(i>=0)D.p[i]=o;else D.p.push(o);sel=o.s;save();render()};
 $("dd").onclick=()=>{if(confirm("¿Eliminar esta pieza?")){D.p=D.p.filter(p=>p.id!==editP);save();render();$("dp").close()}};
 let editU=null,uReset=true;const UDEF="#e8a200";
