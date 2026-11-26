@@ -106,6 +106,9 @@ form .acts{grid-column:1/-1;display:flex;gap:8px;justify-content:space-between}
   <div class="acts"><span></span><span><button type="button" class="btn" id="cu">Cancelar</button> <button class="btn primary" type="submit">Guardar unidad</button></span></div>
 </form></dialog>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<div id="sync" style="position:fixed;right:10px;bottom:8px;font:600 12px system-ui,sans-serif;background:rgba(255,255,255,.9);padding:3px 8px;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.2);z-index:50"></div>
 <script>
 const ST=["Pendiente","Compras","Maestranza","Soldadura","Pintura","Servicio externo","Montaje","Listo"];
 const W=[0,0,0,0,.7,0,.85,1];
@@ -139,7 +142,7 @@ const seed=()=>({
 let D;try{D=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!D||!D.m||!D.p)D=seed();
 D.uc=D.uc||{};
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}push()};
 let sel=D.m[0]?.id,fe="",editP=null,editM=null;
 const idx=e=>ST.indexOf(e);
 const prog=ps=>ps.length?Math.round(ps.reduce((s,p)=>s+W[idx(p.e)],0)/ps.length*100):0;
@@ -228,6 +231,41 @@ $("ns").onclick=()=>openM();$("cm").onclick=()=>$("dm").close();
 $("fm").onsubmit=e=>{const f=e.target.elements,o={id:editM||"m"+Date.now(),n:f.n.value.trim(),ing:f.ing.value,com:f.com.value};
  const i=D.m.findIndex(m=>m.id===editM);if(i>=0)D.m[i]=o;else D.m.push(o);sel=o.id;save();render()};
 $("dmx").onclick=()=>{if(confirm("¿Eliminar la sonda y todas sus piezas?")){D.m=D.m.filter(m=>m.id!==editM);D.p=D.p.filter(p=>p.s!==editM);sel=D.m[0]?.id;save();render();$("dm").close()}};
+
+/* ===== SINCRONIZACIÓN COMPARTIDA (Firebase Realtime Database) ===== */
+const FIREBASE_CONFIG={
+ databaseURL:"https://avance-e0cc4-default-rtdb.firebaseio.com"   // ej: https://mi-proyecto-default-rtdb.firebaseio.com
+};
+let ref=null,lastJSON=null;
+function setStatus(t,c){const s=$("sync");if(s){s.textContent=t;s.style.color=c}}
+function push(){
+ if(!ref)return;
+ const j=JSON.stringify(D);lastJSON=j;
+ ref.set(j).then(()=>setStatus("● Sincronizado","#2e9d57")).catch(()=>setStatus("● Error al guardar","#d33"));
+}
+function initSync(){
+ if(!window.firebase||FIREBASE_CONFIG.databaseURL.startsWith("PEGA")){setStatus("● Solo local (sin Firebase)","#999");return}
+ try{
+  firebase.initializeApp(FIREBASE_CONFIG);
+  ref=firebase.database().ref("sondas");
+  setStatus("● Conectando…","#e8a200");
+  ref.on("value",snap=>{
+   const v=snap.val();
+   if(v==null){push();return}            // primera vez: sube los datos actuales
+   if(v===lastJSON){setStatus("● Sincronizado","#2e9d57");return}   // eco de mi propio cambio
+   try{
+    const nd=JSON.parse(v);
+    if(nd&&nd.m&&nd.p){D=nd;D.uc=D.uc||{};lastJSON=v;
+     try{localStorage.setItem(KEY,v)}catch(e){}
+     if(!D.m.some(m=>m.id===sel))sel=D.m[0]?.id;
+     render();
+    }
+   }catch(e){}
+   setStatus("● Sincronizado","#2e9d57");
+  },()=>setStatus("● Sin acceso a la base","#d33"));
+ }catch(e){setStatus("● Error de configuración","#d33")}
+}
+initSync();
 render();
 </script>
 </body>
