@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Control de reparación de sondas</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e8ebed;--panel:#f6f7f8;--ink:#1d2830;--mute:#5f6c75;--line:#c9d0d5;--accent:#e8a200;--accent-ink:#1d2830;--ok:#2f7d4f;--bad:#b83a2e;--info:#2f6f9f;
+--c0:#c9d0d5;--c1:#2f6f9f;--c2:#e8a200;--c3:#d2561f;--c4:#7a4fa0;--c5:#2f7d4f;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141b21;--panel:#1d272f;--ink:#e6eaed;--mute:#8d9aa4;--line:#33414b;--accent:#f0b429;--accent-ink:#141b21;--ok:#4fb67a;--bad:#e5695c;--info:#5aa5d8;--c0:#3a4853;--c1:#5aa5d8;--c2:#f0b429;--c3:#ee7a4a;--c4:#a583c9;--c5:#4fb67a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141b21;--panel:#1d272f;--ink:#e6eaed;--mute:#8d9aa4;--line:#33414b;--accent:#f0b429;--accent-ink:#141b21;--ok:#4fb67a;--bad:#e5695c;--info:#5aa5d8;--c0:#3a4853;--c1:#5aa5d8;--c2:#f0b429;--c3:#ee7a4a;--c4:#a583c9;--c5:#4fb67a;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "IBM Plex Sans",system-ui,sans-serif}
+h1,h2,h3,.num{font-family:"Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.01em;margin:0}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;padding:22px 24px 14px;border-bottom:4px solid var(--accent)}
+h1{font-size:34px;font-weight:700;line-height:1}
+header p{margin:4px 0 0;color:var(--mute)}
+main{max-width:1200px;margin:0 auto;padding:18px 16px 40px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--line);padding:10px 14px;cursor:default}
+.kpi .num{font-size:36px;font-weight:700;line-height:1}.kpi span{color:var(--mute);font-size:13px}
+.kpi.bad{border-left-color:var(--bad)}
+button.kpi{font:inherit;color:inherit;text-align:left;cursor:pointer}
+button.kpi[aria-pressed=true]{outline:3px solid var(--accent)}
+.grid{display:grid;grid-template-columns:330px 1fr;gap:16px;margin-top:16px;align-items:start}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+section{background:var(--panel);border:1px solid var(--line);padding:14px 16px;min-width:0}
+h2{font-size:22px;font-weight:600;margin-bottom:10px}
+h3{font-size:19px;font-weight:600}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+input,select,button.btn{font:inherit;padding:7px 9px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:3px}
+button.btn{cursor:pointer;font-weight:600}button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button.sm{padding:3px 8px;font-size:13px}
+:focus-visible{outline:3px solid var(--info);outline-offset:1px}
+.mc{width:100%;text-align:left;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-left:5px solid var(--line);padding:10px 12px;margin-bottom:10px;cursor:pointer;display:block}
+.mc[aria-pressed=true]{border-left-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--bg))}
+.mc .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.mc .num{font-size:28px;font-weight:700}
+.mc small,.sub{color:var(--mute);font-size:13px}
+.seg{display:flex;height:10px;background:var(--c0);margin:6px 0 4px}
+.seg i{display:block;height:100%}
+.late{color:var(--bad);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--mute);margin:8px 0 12px}
+.legend b{display:inline-block;width:10px;height:10px;margin-right:5px}
+.comp{border-top:1px solid var(--line);padding:10px 0}
+.comp .hd{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:14px}
+th{color:var(--mute);font-weight:600;font-size:13px}
+td select{border-left-width:6px;font-weight:600}
+.empty{padding:22px;text-align:center;color:var(--mute)}
+dialog{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:18px;max-width:540px;width:calc(100% - 24px)}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+form label{display:flex;flex-direction:column;font-size:13px;color:var(--mute);gap:3px}
+form .full{grid-column:1/-1}
+form .acts{grid-column:1/-1;display:flex;gap:8px;justify-content:space-between}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Control de reparación de sondas</h1><p>Avance por sonda, componente y pieza según su etapa</p></div>
+  <div class="tools"><button class="btn" id="ns">Nueva sonda</button><button class="btn primary" id="np">Nueva pieza</button></div>
+</header>
+<main>
+  <div class="kpis" id="kpis"></div>
+  <div class="grid">
+    <section><h2>Sondas en taller</h2><div id="ms"></div></section>
+    <section id="det"></section>
+  </div>
+</main>
+
+<dialog id="dp"><form id="fp" method="dialog">
+  <label>Sonda<select name="sonda" required></select></label>
+  <label>Componente<input name="comp" list="cl" required placeholder="Ej. Cabezal de rotación"></label><datalist id="cl"></datalist>
+  <label class="full">Pieza<input name="pieza" required placeholder="Ej. Eje principal"></label>
+  <label>Cantidad<input name="cant" type="number" min="1" value="1"></label>
+  <label>Etapa<select name="etapa"></select></label>
+  <label>Proveedor / responsable<input name="prov" placeholder="Ej. Maestranza interna"></label>
+  <label>N.º de OC o requerimiento<input name="oc"></label>
+  <label class="full">Fecha prometida<input name="fecha" type="date"></label>
+  <div class="acts"><button type="button" class="btn" id="dd">Eliminar</button><span><button type="button" class="btn" id="cp">Cancelar</button> <button class="btn primary" type="submit">Guardar pieza</button></span></div>
+</form></dialog>
+
+<dialog id="dm"><form id="fm" method="dialog">
+  <label class="full">Sonda<input name="n" required placeholder="Ej. LF-90 #14"></label>
+  <label>Fecha de ingreso<input name="ing" type="date" required></label>
+  <label>Fecha compromiso<input name="com" type="date" required></label>
+  <div class="acts"><button type="button" class="btn" id="dmx">Eliminar sonda</button><span><button type="button" class="btn" id="cm">Cancelar</button> <button class="btn primary" type="submit">Guardar sonda</button></span></div>
+</form></dialog>
+
+<script>
+const ST=["Pendiente","Compras","Maestranza","Soldadura","Montaje","Listo"];
+const W=[0,.2,.5,.5,.8,1];
+const KEY="sondas-v2";
+const $=id=>document.getElementById(id);
+const d0=new Date();d0.setHours(0,0,0,0);
+const iso=n=>{const d=new Date(d0);d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+const today=iso(0);
+const days=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
+const fmt=s=>{if(!s)return"—";const[y,m,d]=s.split("-");return d+"/"+m};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let n=0;const P=(s,c,p,cant,e,prov,oc,f)=>({id:"p"+(++n),s,c,p,cant,e,prov,oc,f});
+const seed=()=>({
+ m:[{id:"m1",n:"LF-90 #14",ing:iso(-9),com:iso(6)},{id:"m2",n:"LF-70 #07",ing:iso(-14),com:iso(-2)},{id:"m3",n:"LM-75 #03",ing:iso(-2),com:iso(10)}],
+ p:[
+  P("m1","Cabezal de rotación","Eje principal",1,"Maestranza","Maestranza interna","",iso(2)),
+  P("m1","Cabezal de rotación","Rodamientos",2,"Compras","SKF","OC-5521",iso(4)),
+  P("m1","Cabezal de rotación","Sellos y retenes",1,"Listo","Almacén","",""),
+  P("m1","Cabezal de rotación","Carcasa con fisura",1,"Soldadura","Soldadura taller","",iso(1)),
+  P("m1","Bomba de lodo","Pistones",3,"Compras","Proveedor local","OC-5530",iso(5)),
+  P("m1","Bomba de lodo","Camisas",3,"Maestranza","Maestranza interna","",iso(3)),
+  P("m2","Winche","Tambor",1,"Soldadura","Soldadura taller","",iso(-1)),
+  P("m2","Winche","Banda de freno",1,"Montaje","Mecánico","",iso(1)),
+  P("m2","Winche","Cable de acero",1,"Compras","Proveedor local","OC-5498",iso(-3)),
+  P("m2","Chasis","Soporte de mástil",1,"Soldadura","Soldadura taller","",iso(0)),
+  P("m3","Sistema hidráulico","Cilindro de levante",1,"Pendiente","","",""),
+  P("m3","Sistema hidráulico","Mangueras",6,"Compras","Proveedor local","OC-5541",iso(7)),
+  P("m3","Sistema hidráulico","Bomba de pistones",1,"Maestranza","Maestranza interna","",iso(8))
+ ]});
+let D;try{D=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!D||!D.m||!D.p)D=seed();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}};
+let sel=D.m[0]?.id,fe="",editP=null,editM=null;
+const idx=e=>ST.indexOf(e);
+const prog=ps=>ps.length?Math.round(ps.reduce((s,p)=>s+W[idx(p.e)],0)/ps.length*100):0;
+const late=p=>p.e!=="Listo"&&p.f&&p.f<today;
+const seg=ps=>`<div class="seg" title="Distribución de piezas por etapa">`+ST.map((e,i)=>{const c=ps.filter(p=>p.e===e).length;return c?`<i style="width:${c/ps.length*100}%;background:var(--c${i})"></i>`:""}).join("")+`</div>`;
+const sd=document.querySelectorAll("select");
+$("fp").elements.etapa.innerHTML=ST.map(e=>`<option>${e}</option>`).join("");
+function render(){
+ const all=D.p;
+ $("kpis").innerHTML=`<div class="kpi"><div class="num">${all.length}</div><span>Piezas en seguimiento</span></div>`+
+  ["Compras","Maestranza","Soldadura"].map(e=>`<button class="kpi" data-e="${e}" aria-pressed="${fe===e}" style="border-left-color:var(--c${idx(e)})"><div class="num">${all.filter(p=>p.e===e).length}</div><span>En ${e.toLowerCase()}</span></button>`).join("")+
+  `<div class="kpi ${all.some(late)?"bad":""}"><div class="num">${all.filter(late).length}</div><span>Piezas atrasadas</span></div>`+
+  `<div class="kpi" style="border-left-color:var(--c5)"><div class="num">${prog(all)}%</div><span>Avance de la flota</span></div>`;
+ $("ms").innerHTML=D.m.length?D.m.map(m=>{const ps=all.filter(p=>p.s===m.id),l=ps.filter(late).length;
+  return `<button class="mc" data-m="${m.id}" aria-pressed="${sel===m.id}"><div class="top"><b>${esc(m.n)}</b><span class="num">${prog(ps)}%</span></div>${ps.length?seg(ps):""}<small>${ps.filter(p=>p.e==="Listo").length}/${ps.length} piezas listas · ${days(m.ing,today)} d en taller</small><br><small class="${m.com<today?"late":""}">Compromiso ${fmt(m.com)}${l?` · <span class="late">${l} atrasada${l>1?"s":""}</span>`:""}</small></button>`}).join(""):`<div class="empty">Aún no hay sondas. Crea una con “Nueva sonda”.</div>`;
+ const m=D.m.find(x=>x.id===sel);
+ if(!m){$("det").innerHTML=`<div class="empty">Selecciona una sonda para ver sus componentes y piezas.</div>`;return}
+ const ps=all.filter(p=>p.s===m.id),shown=ps.filter(p=>!fe||p.e===fe);
+ const cs=[...new Set(ps.map(p=>p.c))].filter(c=>shown.some(p=>p.c===c));
+ $("det").innerHTML=`<div class="tools" style="justify-content:space-between"><div><h2 style="margin:0">${esc(m.n)}</h2><span class="sub">Ingreso ${fmt(m.ing)} · compromiso ${fmt(m.com)}</span></div><div><span class="num" style="font-size:40px;font-weight:700">${prog(ps)}%</span> <button class="btn sm" id="em">Editar sonda</button></div></div>
+ ${ps.length?seg(ps):""}
+ <div class="legend">${ST.map((e,i)=>`<span><b style="background:var(--c${i})"></b>${e} ${ps.filter(p=>p.e===e).length}</span>`).join("")}${fe?` <button class="btn sm" id="cf">Quitar filtro: ${fe}</button>`:""}</div>`+
+ (cs.length?cs.map(c=>{const cp=ps.filter(p=>p.c===c);return `<div class="comp"><div class="hd"><h3>${esc(c)}</h3><span class="sub">${cp.filter(p=>p.e==="Listo").length}/${cp.length} listas · ${prog(cp)}%</span></div>${seg(cp)}
+ <div class="scroll"><table><thead><tr><th>Pieza</th><th>Etapa</th><th>Responsable</th><th>OC</th><th>Prometida</th><th></th></tr></thead><tbody>`+
+ cp.filter(p=>!fe||p.e===fe).map(p=>`<tr><td>${esc(p.p)}${p.cant>1?` <small class="sub">×${p.cant}</small>`:""}</td><td><select data-pe="${p.id}" style="border-left-color:var(--c${idx(p.e)})" aria-label="Etapa de ${esc(p.p)}">${ST.map(e=>`<option${e===p.e?" selected":""}>${e}</option>`).join("")}</select></td><td>${esc(p.prov||"—")}</td><td>${esc(p.oc||"—")}</td><td class="${late(p)?"late":""}">${fmt(p.f)}${late(p)?" (atrasada)":""}</td><td><button class="btn sm" data-ep="${p.id}">Editar</button></td></tr>`).join("")+`</tbody></table></div></div>`}).join(""):
+ `<div class="empty">${ps.length?"Ninguna pieza está en esta etapa.":"Esta sonda aún no tiene piezas. Agrega la primera con “Nueva pieza”."}</div>`);
+}
+document.addEventListener("click",e=>{
+ const t=e.target.closest("button");if(!t)return;
+ if(t.dataset.m){sel=t.dataset.m;render()}
+ else if(t.dataset.e){fe=fe===t.dataset.e?"":t.dataset.e;render()}
+ else if(t.id==="cf"){fe="";render()}
+ else if(t.dataset.ep)openP(D.p.find(p=>p.id===t.dataset.ep));
+ else if(t.id==="em")openM(D.m.find(m=>m.id===sel));
+});
+document.addEventListener("change",e=>{const id=e.target.dataset.pe;if(id){D.p.find(p=>p.id===id).e=e.target.value;save();render()}});
+function openP(p){
+ if(!D.m.length){alert("Primero crea una sonda.");return}
+ editP=p?p.id:null;$("fp").reset();const f=$("fp").elements;
+ f.sonda.innerHTML=D.m.map(m=>`<option value="${m.id}">${esc(m.n)}</option>`).join("");
+ $("cl").innerHTML=[...new Set(D.p.map(x=>x.c))].map(c=>`<option value="${esc(c)}">`).join("");
+ const v=p||{s:sel||D.m[0].id,c:"",p:"",cant:1,e:"Pendiente",prov:"",oc:"",f:""};
+ f.sonda.value=v.s;f.comp.value=v.c;f.pieza.value=v.p;f.cant.value=v.cant;f.etapa.value=v.e;f.prov.value=v.prov;f.oc.value=v.oc;f.fecha.value=v.f;
+ $("dd").style.visibility=p?"visible":"hidden";$("dp").showModal();
+}
+$("np").onclick=()=>openP();$("cp").onclick=()=>$("dp").close();
+$("fp").onsubmit=e=>{const f=e.target.elements;
+ const o={id:editP||"p"+Date.now(),s:f.sonda.value,c:f.comp.value.trim(),p:f.pieza.value.trim(),cant:+f.cant.value||1,e:f.etapa.value,prov:f.prov.value.trim(),oc:f.oc.value.trim(),f:f.fecha.value};
+ const i=D.p.findIndex(p=>p.id===editP);if(i>=0)D.p[i]=o;else D.p.push(o);sel=o.s;save();render()};
+$("dd").onclick=()=>{if(confirm("¿Eliminar esta pieza?")){D.p=D.p.filter(p=>p.id!==editP);save();render();$("dp").close()}};
+function openM(m){editM=m?m.id:null;$("fm").reset();const f=$("fm").elements;f.n.value=m?m.n:"";f.ing.value=m?m.ing:today;f.com.value=m?m.com:iso(14);$("dmx").style.visibility=m?"visible":"hidden";$("dm").showModal()}
+$("ns").onclick=()=>openM();$("cm").onclick=()=>$("dm").close();
+$("fm").onsubmit=e=>{const f=e.target.elements,o={id:editM||"m"+Date.now(),n:f.n.value.trim(),ing:f.ing.value,com:f.com.value};
+ const i=D.m.findIndex(m=>m.id===editM);if(i>=0)D.m[i]=o;else D.m.push(o);sel=o.id;save();render()};
+$("dmx").onclick=()=>{if(confirm("¿Eliminar la sonda y todas sus piezas?")){D.m=D.m.filter(m=>m.id!==editM);D.p=D.p.filter(p=>p.s!==editM);sel=D.m[0]?.id;save();render();$("dm").close()}};
+render();
+</script>
+</body>
+</html>
